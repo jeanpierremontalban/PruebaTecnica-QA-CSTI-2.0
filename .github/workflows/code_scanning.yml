@@ -1,0 +1,13 @@
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/**'
+      - 'devops/**'
+      - 'src/test/**'
+
+jobs:
+  sast:
+    name: Static Application Security Testing - SAST
+    uses: "pacifico-seguros-org/tpl-actions-gradle/.github/workflows/codeql.yml@master"

@@ -1,0 +1,74 @@
+name: Functional Test - Integration
+
+on:
+  workflow_dispatch:
+    inputs:
+      ephemeralId:
+        description: Ingrese un ID único para la ejecución efímera
+        type: string
+        required: false
+      tag:
+        description: Ingrese nombre de tag
+        type: string
+      userStory:
+        description: Ingrese el código de la HU, (Ejem. TEST-2256)
+        type: string
+        default: TEST-2256
+        required: true
+      quarter:
+        description: Ingrese el Q
+        type: choice
+        required: true  
+        options:
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+      sprint:
+        description: Ingrese el sprint
+        type: choice
+        required: true
+        options:
+          - Sprint 1
+          - Sprint 2
+          - Sprint 3
+          - Sprint 4
+          - Sprint 5
+          - Sprint 6
+          - Sprint 7
+      squad:
+        description: Ingrese el squad
+        type: choice
+        required: true
+        options:
+          - Steel Pulse
+          - Los Shapis
+          - Paramore
+      jiraUserId:
+        description: Ingrese el usuario de Jira
+        type: string
+        required: true
+        default: 557058:acc6da92-6055-472a-a861-e441ea499aef
+jobs:
+  run-tests:
+    uses: "pacifico-seguros-org/tpl-job-cicd/.github/workflows/tpl-job-maven-karate.yml@master"
+    with:
+      ephemeralId: ${{ inputs.ephemeralId }}
+      tag: ${{ inputs.tag }}
+      userStory: ${{ inputs.userStory }}
+      environment: integracion
+      qmetryEnvironment: "Integration"
+      flagQMetry: true
+      workspace: ./
+      quarter: ${{ inputs.quarter }}
+      sprint: ${{ inputs.sprint }}
+      squad: ${{ inputs.squad }}
+      jiraUserId: ${{ inputs.jiraUserId }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID_SP_INT }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET_SP_INT }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+      JIRA_USER: ${{ vars.JIRA_USER }}
+      GH_PACKAGES_USER: ${{ secrets.GH_PACKAGES_USER }}
+      GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }} 
